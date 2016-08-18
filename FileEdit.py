@@ -27,6 +27,13 @@ class FileEdit:
         # 是否替换目录
         self.__dir = True
 
+        # retype
+        # 后缀名
+        self.__type = ".txt"
+        # 是否修改后缀名
+        self.__typechange = False
+
+    # 根据字符判断对文件进行重命名
     def rename(self):
         if self.__filename.find(self.__src.encode('cp936')) >= 0:
             # 替换字符串的字符
@@ -37,6 +44,25 @@ class FileEdit:
             if not(os.path.isdir(os.path.join(self.__parent,self.__filename)) and not(self.__dir)):
                 os.rename(os.path.join(self.__parent,self.__filename),os.path.join(self.__parent,name))
                 print "rename:" + os.path.join(self.__parent,self.__filename).decode('gb2312') + "-->" + name.decode('gb2312')
+        return
+
+    # 添加或者修改文件的后缀
+    def retype(self):
+        name = self.__filename
+        if os.path.isdir(os.path.join(self.__parent,self.__filename)):
+            return
+        sufix = os.path.splitext(self.__filename)[1][1:]
+        if self.__typechange and sufix:
+            sufix = "." + sufix
+            name = self.__filename.replace(sufix, self.__type)
+        elif not sufix:
+            # 替换字符串的字符
+            name = self.__filename + self.__type
+        else:
+            return
+        os.chdir(self.__parent)
+        os.rename(os.path.join(self.__parent,self.__filename),os.path.join(self.__parent,name))
+        print "rename:" + os.path.join(self.__parent,self.__filename).decode('gb2312') + "-->" + name.decode('gb2312')
         return
 
     # 删除空目录
@@ -78,6 +104,7 @@ def main():
     ftls = FileEdit()
     while ftls.count():
         ftls.loop(ftls.rename)
+    print "Job Done."
 
 if __name__ == '__main__':
     main()
