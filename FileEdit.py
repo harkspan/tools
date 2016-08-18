@@ -16,6 +16,9 @@ class FileEdit:
         # 需要操作的目录
         self.__path = ["D:\\测试123"]
 
+        # 是否删除空目录
+        self.__null = True
+
         # rename
         # 需要替换的字符
         self.__src = "ccc"
@@ -41,7 +44,8 @@ class FileEdit:
         if not os.listdir(curdir):
             os.rmdir(curdir)
             print 'del null dir:', curdir.decode('gb2312')
-        return
+            return True
+        return False
 
     # 队列目录数
     def count(self):
@@ -57,8 +61,11 @@ class FileEdit:
                 self.__parent = parent
                 self.__filename = dirname
                 #print "parent:" + parent.decode('gb2312') + "-->filename:" + dirname.decode('gb2312')
-                fun()
-                self.rmnulldir(os.path.join(parent, dirname))
+                isdell = False
+                if self.__null:
+                    isdell = self.rmnulldir(os.path.join(parent, dirname))
+                if not isdell:
+                    fun()
 
             for filename in filenames:  # 输出文件信息
                 self.__parent = parent
