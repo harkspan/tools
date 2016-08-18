@@ -12,8 +12,9 @@ class FileEdit:
     def __init__(self):
         self.__parent = ''
         self.__filename = ''
+
         # 需要操作的目录
-        self.__path = "D:\\测试123abc"
+        self.__path = ["D:\\测试123"]
 
         # rename
         # 需要替换的字符
@@ -28,6 +29,8 @@ class FileEdit:
             # 替换字符串的字符
             name = self.__filename.replace(self.__src.encode('cp936'),self.__des.encode('cp936'))
             os.chdir(self.__parent)
+            if (os.path.isdir(os.path.join(self.__parent, self.__filename)) and self.__dir):
+                self.__path.append(os.path.join(self.__parent,name).decode('gb2312'))
             if not(os.path.isdir(os.path.join(self.__parent,self.__filename)) and not(self.__dir)):
                 os.rename(os.path.join(self.__parent,self.__filename),os.path.join(self.__parent,name))
                 print "rename:" + os.path.join(self.__parent,self.__filename).decode('gb2312') + "-->" + name.decode('gb2312')
@@ -40,10 +43,15 @@ class FileEdit:
             print 'del null dir:', curdir.decode('gb2312')
         return
 
+    # 队列目录数
+    def count(self):
+        return len(self.__path)
+
     # 循环遍历
     def loop(self, fun):
         # 三个参数：分别返回1.父目录 2.所有文件夹名字（不含路径） 3.所有文件名字
-        for parent, dirnames, filenames in os.walk(self.__path.encode('cp936')):
+        scanpath = self.__path.pop()
+        for parent, dirnames, filenames in os.walk(scanpath.encode('cp936')):
             # 输出文件夹信息
             for dirname in dirnames:
                 self.__parent = parent
@@ -61,7 +69,8 @@ class FileEdit:
 
 def main():
     ftls = FileEdit()
-    ftls.loop(ftls.rename)
+    while ftls.count():
+        ftls.loop(ftls.rename)
 
 if __name__ == '__main__':
     main()
