@@ -4,11 +4,27 @@
 
 ## 功能
 
-#### 文件操作
+#### FileEdit.py 文件操作
 
-一、替换文件名中的字符。
-二、修改文件后缀
-三、删除空文件夹
+---
+
+*   replace name
+*   filename add
+*   rename with attr
+*   rename photo
+*   retype file
+*   del null dir
+*   del null file
+
+---
+
+* 替换文件名中的字符
+* 为文件名增加前后缀
+* 根据属性修改文件名
+* 根据拍摄时间修改照片名
+* 修改文件类型
+* 删除空文件夹
+* 删除空文件
 
 ---
 
